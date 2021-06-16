@@ -30,6 +30,12 @@ def main():
         help="Start from this block, otherwise start from latest",
         metavar="NUMBER",
     )
+    rpc.add_argument(
+        "--poa",
+        type=bool, 
+        default=False,
+        help="Whether the network we're connecting to is a POA network"
+    )
 
     # Output
     output = parser.add_argument_group("Output")
@@ -150,6 +156,7 @@ def main():
         karl = Karl(
             rpc=args.rpc,
             rpc_tls=args.rpc_tls,
+            poa=args.poa,
             output=output_destination,
             verbosity=verbosity_levels.get(verbose, verbosity_default),
             block_number=args.block,

@@ -8,6 +8,7 @@ from mythril.mythril import MythrilAnalyzer
 from mythril.mythril import MythrilDisassembler
 
 from web3 import Web3
+from web3.middleware import geth_poa_middleware
 from karl.exceptions import RPCError
 from karl.sandbox.sandbox import Sandbox
 from karl.sandbox.exceptions import SandboxBaseException
@@ -25,6 +26,7 @@ class Karl:
         self,
         rpc=None,
         rpc_tls=False,
+        poa = False,
         block_number=None,
         output=None,
         sandbox=True,
@@ -114,6 +116,8 @@ class Karl:
                 "'ganache', 'infura-[mainnet, rinkeby, kovan, ropsten]' "
                 "or HOST:PORT".format(rpc)
             )
+        if poa: 
+            self.web3.middleware_stack.inject(geth_poa_middleware,layer=0)
 
         self.block_number = block_number or self.web3.eth.blockNumber
 
